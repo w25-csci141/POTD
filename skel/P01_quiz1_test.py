@@ -2,6 +2,7 @@
 import pytest
 import subprocess
 import sys
+import re
 
 basename = "P01_quiz1"
 
@@ -18,7 +19,10 @@ def test_quiz1():
     #When prompted for input, enter newline
     stdout, stderr = process.communicate(input="\n")
 
-    #verify that the input prompt had 'What if' in the text string (capitalization and spacing matters!).
-    assert "What is" in stdout
+    #define the pattern of the text string
+    pattern = r"^What is \d+\s*\*\s*\d+"
+
+    #verify that the input prompt matches the requirement
+    assert re.match(pattern,stdout)
 
 pytest.main(["P01_quiz1_test.py",  "-vv", "--showlocals", "-p", "no:faulthandler"])

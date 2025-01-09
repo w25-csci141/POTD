@@ -26,13 +26,12 @@ hints for your program.
 
 Consider this pytest for POTD 1:
 
-'''
+```
 #POTD 1 test
 import pytest
 import subprocess
 import sys
-
-basename = "P01_quiz1"
+import re
 
 
 def test_quiz1():
@@ -43,16 +42,20 @@ def test_quiz1():
         stderr=subprocess.PIPE,
         text=True
     )
+
     #When prompted for input, enter newline
     stdout, stderr = process.communicate(input="\n")
+ 
+    #define the pattern of the text string
+    pattern = r"^What is \d+\s*\*\s*\d+"
 
-    #verify that the input prompt had 'What if' in the text string (capitalization and spacing matters!).
-    assert "What is" in stdout
+    #verify that the input prompt matches the requirement
+    assert re.match(pattern,stdout)
 
 pytest.main(["P01_quiz1_test.py",  "-vv", "--showlocals", "-p", "no:faulthandler"])
 
-'''
-The 'assert' statement indicates what it is looking for: in this case, it is looking for the string 'What is' to be printed to the screen as part of a user input request. 
+```
+The 'assert' statement specifies the condition it is verifying: in this case, it checks that the output string begins with "What is ", followed by an integer, the "*" symbol, and another integer. This format represents a prompt displayed to the user, requesting input in the form of a mathematical expression.
 
 When you design your program, the pytest shows you the
 arguments your program should take as inputs, and the expected format of the output.
@@ -68,7 +71,7 @@ Once you’ve finished writing your POTD, open the pytest program and run it.
 If it runs correctly, you should get a message that looks like this:
 
 ```
-======================================= 3 passed in 0.35s =======================================
+============================== 1 passed in 0.13s ===============================
 ```
 
 Congratulations, your code has finished the task. However often in this class you will find that
